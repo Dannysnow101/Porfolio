@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+💼 Danny Snow — Developer Portfolio
 
-## Getting Started
+This is my personal developer portfolio built to showcase my skills, projects, and experience as a Frontend Developer specializing in React and Next.js applications.
 
-First, run the development server:
+It highlights my work, tech stack, and provides an easy way for recruiters, clients, and collaborators to reach me.
 
-```bash
+🚀 Live Overview
+
+This portfolio presents:
+
+👨🏾‍💻 Who I am as a developer
+
+🛠 Technologies I use
+
+📂 Featured projects
+
+📞 Contact information
+
+Focused on clean UI, performance, and reusable components.
+
+🧑🏾‍💻 About Me
+
+I’m Danny Snow, a frontend developer who builds modern, scalable web applications using:
+
+React
+
+Next.js (App Router)
+
+TypeScript
+
+CSS / SCSS
+
+REST APIs
+
+I care about:
+
+Clean architecture
+
+Responsive design
+
+Accessible interfaces
+
+Production-ready code
+
+🛠 Tech Stack
+Frontend
+
+React
+
+Next.js
+
+TypeScript
+
+JavaScript (ES6+)
+
+Styling
+
+CSS3
+
+SCSS
+
+Flexbox
+
+Grid
+
+Workflow & Tools
+
+Git & GitHub
+
+REST APIs
+
+Component-based architecture
+
+✨ Features of This Portfolio
+
+Responsive design (mobile, tablet, desktop)
+
+Modern UI layout
+
+Hero section with CTA buttons
+
+Tech stack showcase
+
+Project showcase section
+
+Contact form
+
+Downloadable CV
+
+Clean component structure
+
+📂 Project Structure (Example)
+/components     → Reusable UI components  
+/pages or /app  → Routes (Next.js)  
+/public         → Images and assets  
+/styles         → Global and modular styles  
+
+⚙️ Getting Started (Run Locally)
+
+Clone the repo
+
+git clone https://github.com/your-username/your-portfolio.git
+
+
+Go into the project
+
+cd your-portfolio
+
+
+Install dependencies
+
+npm install
+
+
+Start development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+App will run on:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000
 
-## Learn More
+📸 Sections Included
 
-To learn more about Next.js, take a look at the following resources:
+Hero (Introduction + Role)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Stats (Experience & Projects)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tech Stack
 
-## Deploy on Vercel
+Projects Showcase
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contact Section
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Footer
+
+📬 Contact
+
+If you'd like to work with me or have a project in mind:
+
+📧 Email: sowaledaniel5@gmail.com
+
+📍 Location: Lagos, Nigeria
+
+📄 License
+
+This project is open for learning and inspiration.
+Feel free to fork and customize for your own portfolio.
