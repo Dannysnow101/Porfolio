@@ -18,7 +18,7 @@ const projects: ProjectItem[] = [
         category: 'E‑COMMERCE · WEBSITE',
         description: 'Modern product listing and checkout experience for fashion brands.',
         image: '/images/EasyWears.png',
-        liveUrl: '#',
+        liveUrl: 'https://easywearsweb.netlify.app/',
         detailsUrl: '#',
     },
     {
@@ -26,7 +26,7 @@ const projects: ProjectItem[] = [
         category: 'FINTECH · LANDING PAGE',
         description: 'Pixel‑perfect clone of Flutterwave homepage using Next.js.',
         image: '/images/Flutterwave.png',
-        liveUrl: '#',
+        liveUrl: 'https://flutterwaveclone101.netlify.app/',
         detailsUrl: '#',
     },
     {
@@ -34,7 +34,7 @@ const projects: ProjectItem[] = [
         category: 'PERSONAL · PORTFOLIO',
         description: 'First version of my personal portfolio with dark UI.',
         image: '/images/PortfolioV1.png',
-        liveUrl: '#',
+        liveUrl: 'https://snowportfolio.netlify.app/',
         detailsUrl: '#',
     },
 ];
@@ -117,7 +117,7 @@ export default function PortfolioSection() {
                         'margin-top 0.25s ease-out, opacity 0.25s ease-out, transform 0.25s ease-out',
                 }}
             >
-                <div className='mb-4 inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1 text-xs font-semibold text-emerald-600'>
+                <div className='inline-flex items-center px-4 py-1 mb-4 text-xs font-semibold border rounded-full border-emerald-200 bg-emerald-50 text-emerald-600'>
                     <span className='mr-2 inline-block h-1.5 w-1.5 rounded-full bg-emerald-500' />
                     Projects
                 </div>
@@ -127,15 +127,15 @@ export default function PortfolioSection() {
                     <span className='text-emerald-500'> Latest Projects</span>
                 </h2>
 
-                <p className='mt-3 max-w-md text-sm leading-relaxed text-gray-600'>
+                <p className='max-w-md mt-3 text-sm leading-relaxed text-gray-600'>
                     I have selected and mentioned here some of my latest projects to share with you.
                 </p>
             </div>
 
             {/* Projects area */}
-            <div className='mt-4 flex justify-center'>
+            <div className='flex justify-center mt-4'>
                 {/* 60% width on desktop */}
-                <div className='relative h-72 w-full md:h-80 md:w-3/5'>
+                <div className='relative w-full h-72 md:h-80 md:w-3/5'>
                     {projects.map((project, index) => {
                         const position = getPosition(index);
                         const isCenter = position === 'center';
@@ -168,7 +168,7 @@ export default function PortfolioSection() {
                             >
                                 {/* Inner wrapper for scroll-based scale */}
                                 <div
-                                    className='h-full w-full transform transition-transform duration-400 ease-out'
+                                    className='w-full h-full transition-transform ease-out transform duration-400'
                                     style={{ transform: `scale(${cardScale})` }}
                                 >
                                     {/* Image (zoom on hover ONLY for center card) */}
@@ -182,8 +182,8 @@ export default function PortfolioSection() {
 
                                     {/* Hover overlay ONLY on center card */}
                                     {isCenter && (
-                                        <div className='pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-                                            <div className='pointer-events-auto max-w-xs px-4 text-center text-white'>
+                                        <div className='absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none bg-black/60 group-hover:opacity-100'>
+                                            <div className='max-w-xs px-4 text-center text-white pointer-events-auto'>
                                                 <div className='mb-2 inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide'>
                                                     {project.category}
                                                 </div>
@@ -218,28 +218,28 @@ export default function PortfolioSection() {
                     <button
                         type='button'
                         onClick={goPrev}
-                        className='absolute left-2 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-gray-800 shadow-md'
+                        className='absolute z-30 flex items-center justify-center w-12 h-12 text-gray-800 -translate-y-1/2 bg-white rounded-full shadow-md left-2 top-1/2'
                         style={{
                             marginLeft: -arrowOffset,
                             opacity: arrowOpacity,
                             transition: 'margin-left 0.25s ease-out, opacity 0.25s ease-out',
                         }}
                     >
-                        <ChevronLeft className='h-5 w-5' />
+                        <ChevronLeft className='w-5 h-5' />
                     </button>
 
                     {/* Right arrow */}
                     <button
                         type='button'
                         onClick={goNext}
-                        className='absolute right-2 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-gray-800 shadow-md'
+                        className='absolute z-30 flex items-center justify-center w-12 h-12 text-gray-800 -translate-y-1/2 bg-white rounded-full shadow-md right-2 top-1/2'
                         style={{
                             marginRight: -arrowOffset,
                             opacity: arrowOpacity,
                             transition: 'margin-right 0.25s ease-out, opacity 0.25s ease-out',
                         }}
                     >
-                        <ChevronRight className='h-5 w-5' />
+                        <ChevronRight className='w-5 h-5' />
                     </button>
                 </div>
             </div>
