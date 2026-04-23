@@ -1,43 +1,10 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface ProjectItem {
-    title: string;
-    category: string;
-    description: string;
-    image: string;
-    liveUrl: string;
-    detailsUrl: string;
-}
-
-const projects: ProjectItem[] = [
-    {
-        title: 'EasyWears – E‑commerce UI',
-        category: 'E‑COMMERCE · WEBSITE',
-        description: 'Modern product listing and checkout experience for fashion brands.',
-        image: '/images/EasyWears.png',
-        liveUrl: 'https://easywearsweb.netlify.app/',
-        detailsUrl: '#',
-    },
-    {
-        title: 'Flutterwave Homepage Clone',
-        category: 'FINTECH · LANDING PAGE',
-        description: 'Pixel‑perfect clone of Flutterwave homepage using Next.js.',
-        image: '/images/Flutterwave.png',
-        liveUrl: 'https://flutterwaveclone101.netlify.app/',
-        detailsUrl: '#',
-    },
-    {
-        title: 'Portfolio v1 – Dark Theme',
-        category: 'PERSONAL · PORTFOLIO',
-        description: 'First version of my personal portfolio with dark UI.',
-        image: '/images/PortfolioV1.png',
-        liveUrl: 'https://snowportfolio.netlify.app/',
-        detailsUrl: '#',
-    },
-];
+import { projects } from '@/data/projects';
 
 export default function PortfolioSection() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -113,8 +80,7 @@ export default function PortfolioSection() {
                     marginTop: headerOffset,
                     opacity: headerOpacity,
                     transform: `scale(${headerScale})`,
-                    transition:
-                        'margin-top 0.25s ease-out, opacity 0.25s ease-out, transform 0.25s ease-out',
+                    transition: 'margin-top 0.25s ease-out, opacity 0.25s ease-out, transform 0.25s ease-out',
                 }}
             >
                 <div className='inline-flex items-center px-4 py-1 mb-4 text-xs font-semibold border rounded-full border-emerald-200 bg-emerald-50 text-emerald-600'>
@@ -142,14 +108,12 @@ export default function PortfolioSection() {
 
                         let positionClasses = '';
                         if (position === 'center') {
-                            positionClasses =
-                                'left-1/2 top-0 w-[80%] -translate-x-1/2 scale-100 opacity-100 z-20';
+                            positionClasses = 'left-1/2 top-0 w-[80%] -translate-x-1/2 scale-100 opacity-100 z-20';
                         } else if (position === 'left') {
                             positionClasses =
                                 'left-1/2 top-4 w-[70%] -translate-x-[115%] scale-95 opacity-80 z-10';
                         } else if (position === 'right') {
-                            positionClasses =
-                                'left-1/2 top-4 w-[70%] translate-x-[15%] scale-95 opacity-80 z-10';
+                            positionClasses = 'left-1/2 top-4 w-[70%] translate-x-[15%] scale-95 opacity-80 z-10';
                         } else {
                             positionClasses =
                                 'left-1/2 top-4 w-[70%] -translate-x-1/2 scale-75 opacity-0 pointer-events-none z-0';
@@ -196,15 +160,18 @@ export default function PortfolioSection() {
                                                     <a
                                                         href={project.liveUrl}
                                                         className='rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-gray-900 transition hover:bg-gray-100'
+                                                        target='_blank'
+                                                        rel='noreferrer'
                                                     >
                                                         Live Demo
                                                     </a>
-                                                    <a
-                                                        href={project.detailsUrl}
+
+                                                    <Link
+                                                        href={`/projects/${project.slug}`}
                                                         className='rounded-full border border-white px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-white/10'
                                                     >
                                                         Details
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
