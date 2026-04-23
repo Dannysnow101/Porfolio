@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Children, isValidElement, useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -159,11 +159,6 @@ export default function ProjectDetailsPage() {
 
                 {/* README */}
                 <div className='p-6 mt-6 bg-white border border-gray-200 shadow-sm rounded-2xl'>
-                    <div className='mb-4'>
-                        <h2 className='text-lg font-bold text-gray-900'>README</h2>
-                        <p className='text-sm text-gray-600'>Fetched live from GitHub and rendered as Markdown.</p>
-                    </div>
-
                     {loading && (
                         <div className='flex items-center justify-center py-12'>
                             <div className='w-8 h-8 border-2 border-gray-200 rounded-full animate-spin border-b-emerald-600' />
@@ -184,7 +179,61 @@ export default function ProjectDetailsPage() {
                                     h1: (props) => <h1 className='mt-6 text-2xl font-bold text-gray-900' {...props} />,
                                     h2: (props) => <h2 className='mt-6 text-xl font-bold text-gray-900' {...props} />,
                                     h3: (props) => <h3 className='mt-5 text-lg font-semibold text-gray-900' {...props} />,
-                                    p: (props) => <p className='mt-3 text-sm leading-relaxed text-gray-700' {...props} />,
+
+                                    // ✅ Make badge rows (shields) line up in a straight line (wrap if needed)
+                                    p: ({ children, ...props }: any) => {
+                                        const arr = Children.toArray(children);
+
+                                        // Remove <br/> and pure whitespace nodes (often causes badge stacking)
+                                        const cleaned = arr.filter((child) => {
+                                            if (typeof child === 'string') return child.trim() !== '';
+                                            if (isValidElement(child) && child.type === 'br') return false;
+                                            return true;
+                                        });
+
+                                        const isBadgeRow =
+                                            cleaned.length > 0 &&
+                                            cleaned.every((child) => {
+                                                if (!isValidElement(child)) return false;
+
+                                                // <img />
+                                                if (child.type === 'img') return true;
+
+                                                // <a><img /></a>
+                                                if (child.type === 'a') {
+                                                    // ✅ FIX: TS sees props as {}, so cast to any when reading props.children
+                                                    const aChildren = Children.toArray((child as any).props?.children);
+                                                    return aChildren.some(
+                                                        (c) => isValidElement(c) && (c as any).type === 'img'
+                                                    );
+                                                }
+
+                                                return false;
+                                            });
+
+                                        if (isBadgeRow) {
+                                            return (
+                                                <p className='flex flex-wrap items-center gap-2 mt-3' {...props}>
+                                                    {cleaned}
+                                                </p>
+                                            );
+                                        }
+
+                                        return (
+                                            <p className='mt-3 text-sm leading-relaxed text-gray-700' {...props}>
+                                                {children}
+                                            </p>
+                                        );
+                                    },
+
+                                    // ✅ Ensure shields/badges behave like inline elements
+                                    img: ({ className, ...props }: any) => (
+                                        <img
+                                            {...props}
+                                            className={['inline-block align-middle', className].filter(Boolean).join(' ')}
+                                        />
+                                    ),
+
                                     a: (props) => (
                                         <a
                                             className='font-medium underline text-emerald-700 underline-offset-4 hover:text-emerald-800'
@@ -208,7 +257,9 @@ export default function ProjectDetailsPage() {
                                     thead: (props) => <thead className='bg-gray-50' {...props} />,
                                     th: (props) => <th className='px-3 py-2 font-semibold text-gray-900 border-b border-gray-200' {...props} />,
                                     td: (props) => <td className='px-3 py-2 text-gray-700 border-b border-gray-200' {...props} />,
-                                    code: ({ inline, children, ...props }) => {
+
+                                    // ✅ TS fix for `inline` prop
+                                    code: ({ node, inline, className, children, ...props }: any) => {
                                         if (inline) {
                                             return (
                                                 <code
