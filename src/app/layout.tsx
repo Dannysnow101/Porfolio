@@ -3,15 +3,14 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-    title: 'M Design – Creative Product Designer Portfolio',
-    description:
-        'Portfolio of Tanvir, a creative product designer helping businesses solve problems with modern UI/UX design.',
+    title: 'Snow Portfolio V2',
+    description: 'A portfolio template built with Next.js and Tailwind CSS.'
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang='en' className='scroll-smooth'>
-            <body className='bg-white text-gray-900 antialiased'>
+            <body className='antialiased text-gray-900 bg-white'>
                 {children}
             </body>
         </html>
