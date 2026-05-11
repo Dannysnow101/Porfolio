@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
 interface StatItem {
     value: string;
     label: string;
@@ -14,58 +12,31 @@ const stats: StatItem[] = [
     { value: '4+', label: 'APIs integrated' },
 ];
 
-export default function StatsSection() {
-    const [progress, setProgress] = useState(0); // 0 → 1 based on center distance
-    const sectionRef = useRef<HTMLElement | null>(null);
+interface Props {
+    sceneProgress?: number;
+    sceneDelta?: number;
+}
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const node = sectionRef.current;
-            if (!node) return;
+export default function StatsSection({ sceneProgress = 1 }: Props) {
+    const p = Math.min(1, Math.max(0, sceneProgress));
+    const entry = Math.min(1, p * 3.33); // reach 1 by progress ≈ 0.3
 
-            const rect = node.getBoundingClientRect();
-            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-            const sectionCenter = rect.top + rect.height / 2;
-            const viewportCenter = windowHeight / 2;
-
-            const distance = Math.abs(sectionCenter - viewportCenter); // 0 when centered
-            const maxDistance = windowHeight / 1.2;
-
-            const raw = 1 - distance / maxDistance; // 1 at center
-            const p = Math.min(1, Math.max(0, raw));
-            setProgress(p);
-        };
-
-        handleScroll();
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleScroll);
-        };
-    }, []);
-
-    const renderStat = (
-        item: StatItem,
-        index: number,
-        valueClass: string,
-        labelClass: string
-    ) => {
-        const fromLeft = index === 0 || index === 2; // 2 from left, 2 from right
-
-        const offsetX = (1 - progress) * (fromLeft ? -30 : 30); // px
-        const opacity = 0.3 + progress * 0.7;
-        const scale = 0.96 + progress * 0.04;
+    const renderStat = (item: StatItem, index: number, valueClass: string, labelClass: string) => {
+        const fromLeft = index === 0 || index === 2;
+        const offsetX = (1 - entry) * (fromLeft ? -30 : 30);
+        const tz = entry * 60;
+        const opacity = 0.2 + entry * 0.8;
+        const scale = 0.96 + entry * 0.04;
 
         return (
             <div
                 key={item.label}
-                className='transform transition-all duration-300 ease-out'
+                className='[transform-style:preserve-3d]'
                 style={{
-                    transform: `translateX(${offsetX}px) scale(${scale})`,
+                    transform: `translateX(${offsetX}px) translateZ(${tz}px) scale(${scale})`,
                     opacity,
-                    transitionDelay: `${index * 80}ms`,
+                    transition: 'transform 0.25s ease-out, opacity 0.25s ease-out',
+                    transitionDelay: `${index * 60}ms`,
                 }}
             >
                 <div className={valueClass}>{item.value}</div>
@@ -75,32 +46,26 @@ export default function StatsSection() {
     };
 
     return (
-        <section
-            className='mt-16 w-full border-y border-gray-100 py-10'
-            ref={sectionRef}
-        >
-            <div className='mx-auto max-w-6xl'>
-                {/* MOBILE: 2 x 2 grid (2 one side, 2 the other) */}
-                <div className='grid grid-cols-2 gap-x-6 gap-y-6 text-center md:hidden'>
+        <section id='stats' className='w-full py-10 border-gray-100 border-y'>
+            <div className='max-w-6xl mx-auto'>
+                <div className='grid grid-cols-2 text-center gap-x-6 gap-y-6 md:hidden'>
                     {stats.map((item, index) =>
                         renderStat(
                             item,
                             index,
                             'text-2xl font-extrabold text-emerald-500',
-                            'mt-1 text-xs font-medium text-gray-700'
-                        )
+                            'mt-1 text-xs font-medium text-gray-700',
+                        ),
                     )}
                 </div>
-
-                {/* DESKTOP: 4 in a straight line */}
                 <div className='hidden md:grid md:grid-cols-4 md:gap-12 md:text-center'>
                     {stats.map((item, index) =>
                         renderStat(
                             item,
                             index,
                             'text-3xl font-extrabold text-emerald-500',
-                            'mt-1 text-sm font-medium text-gray-700'
-                        )
+                            'mt-1 text-sm font-medium text-gray-700',
+                        ),
                     )}
                 </div>
             </div>
