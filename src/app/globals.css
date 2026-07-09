@@ -5,3 +5,104 @@ body {
   color: #171717;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/*
+ * Scroll scene runway: the tall pinned scroll distance only applies on
+ * desktop (md+). Below that, sections flow at their natural height so
+ * content never gets pinned/centered taller than the viewport.
+ */
+.scene-runway {
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .scene-runway {
+    height: var(--scene-h);
+  }
+}
+
+/*
+ * Ambient motion: cheap, always-on background animation used to keep
+ * sections feeling alive through the long pinned scroll holds, independent
+ * of scroll position.
+ */
+@keyframes float-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(18px, -24px) scale(1.08);
+  }
+}
+
+@keyframes float-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-22px, 20px) scale(0.94);
+  }
+}
+
+@keyframes float-c {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(12px, 14px) rotate(10deg);
+  }
+}
+
+@keyframes spin-slower {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.4);
+  }
+}
+
+.animate-float-a {
+  animation: float-a 9s ease-in-out infinite;
+}
+
+.animate-float-b {
+  animation: float-b 11s ease-in-out infinite;
+}
+
+.animate-float-c {
+  animation: float-c 13s ease-in-out infinite;
+}
+
+.animate-spin-slower {
+  animation: spin-slower 22s linear infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-a,
+  .animate-float-b,
+  .animate-float-c,
+  .animate-spin-slower,
+  .animate-pulse-dot {
+    animation: none;
+  }
+}

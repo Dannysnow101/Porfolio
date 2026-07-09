@@ -9,34 +9,41 @@ import { projects } from '@/data/projects';
 interface Props {
     sceneProgress?: number;
     sceneDelta?: number;
+    isDesktop?: boolean;
 }
 
-export default function PortfolioSection({ sceneProgress = 1 }: Props) {
+export default function PortfolioSection({ sceneProgress = 1, isDesktop = true }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const total = projects.length;
 
     const p = Math.min(1, Math.max(0, sceneProgress));
     const entry = Math.min(1, p * 3.33);
 
-    // Scroll-driven shuffle
     const lastProgressRef = useRef(p);
     const accumRef = useRef(0);
     const pauseUntilRef = useRef(0);
     const SHUFFLE_THRESHOLD = 140;
 
     useEffect(() => {
+        // On mobile the scene reveals in a single 0 -> 1 jump rather than a
+        // real scroll-scrub, so the delta-accumulation shuffle below doesn't
+        // apply there -- it would otherwise spin through every project at
+        // once. Mobile users browse with the arrow buttons instead.
+        if (!isDesktop) {
+            accumRef.current = 0;
+            lastProgressRef.current = sceneProgress;
+            return;
+        }
+
         const dp = sceneProgress - lastProgressRef.current;
         lastProgressRef.current = sceneProgress;
 
-        // Only auto-shuffle while inside the scene (avoid edges)
         if (sceneProgress <= 0.1 || sceneProgress >= 0.9) {
             accumRef.current = 0;
             return;
         }
         if (Date.now() < pauseUntilRef.current) return;
 
-        // Approximate viewport pixels travelled inside scene
-        // Scene height ~280vh, runway = 180vh => 1 unit progress ≈ 1.8 * winH
         const winH = typeof window !== 'undefined' ? window.innerHeight : 800;
         accumRef.current += dp * winH * 1.8;
 
@@ -78,7 +85,7 @@ export default function PortfolioSection({ sceneProgress = 1 }: Props) {
     const arrowOpacity = 0.2 + entry * 0.8;
 
     return (
-        <section id='projects' className='overflow-x-hidden'>
+        <section id='projects'>
             <div
                 className='mb-8'
                 style={{
@@ -101,8 +108,14 @@ export default function PortfolioSection({ sceneProgress = 1 }: Props) {
                 </p>
             </div>
 
-            <div className='flex justify-center'>
-                <div className='relative h-72 w-full overflow-hidden md:h-80 md:w-3/5 [perspective:1200px]'>
+            <div className='relative flex justify-center'>
+                {isDesktop && (
+                    <div
+                        aria-hidden
+                        className='animate-spin-slower pointer-events-none absolute left-1/2 top-1/2 hidden h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-100 md:block'
+                    />
+                )}
+                <div className='relative h-72 w-full overflow-hidden md:h-80 md:w-3/5 md:[perspective:1200px]'>
                     {projects.map((project, index) => {
                         const position = getPosition(index);
                         const isCenter = position === 'center';
@@ -110,21 +123,21 @@ export default function PortfolioSection({ sceneProgress = 1 }: Props) {
                         let positionClasses = '';
                         let innerTransform = '';
                         if (position === 'center') {
-                            positionClasses =
-                                'left-1/2 top-0 w-[80%] -translate-x-1/2 opacity-100 z-20';
-                            innerTransform = `translateZ(80px) scale(1)`;
+                            positionClasses = 'left-1/2 top-0 w-[80%] -translate-x-1/2 opacity-100 z-20';
+                            innerTransform = isDesktop ? `translateZ(80px) scale(1)` : 'scale(1)';
                         } else if (position === 'left') {
-                            positionClasses =
-                                'left-1/2 top-4 w-[70%] -translate-x-[115%] opacity-80 z-10';
-                            innerTransform = `translateZ(-40px) rotateY(14deg) scale(0.95)`;
+                            positionClasses = 'left-1/2 top-4 w-[70%] -translate-x-[115%] opacity-80 z-10';
+                            innerTransform = isDesktop
+                                ? `translateZ(-40px) rotateY(14deg) scale(0.95)`
+                                : 'scale(0.92)';
                         } else if (position === 'right') {
-                            positionClasses =
-                                'left-1/2 top-4 w-[70%] translate-x-[15%] opacity-80 z-10';
-                            innerTransform = `translateZ(-40px) rotateY(-14deg) scale(0.95)`;
+                            positionClasses = 'left-1/2 top-4 w-[70%] translate-x-[15%] opacity-80 z-10';
+                            innerTransform = isDesktop
+                                ? `translateZ(-40px) rotateY(-14deg) scale(0.95)`
+                                : 'scale(0.92)';
                         } else {
-                            positionClasses =
-                                'left-1/2 top-4 w-[70%] -translate-x-1/2 opacity-0 pointer-events-none z-0';
-                            innerTransform = `translateZ(-100px) scale(0.75)`;
+                            positionClasses = 'left-1/2 top-4 w-[70%] -translate-x-1/2 opacity-0 pointer-events-none z-0';
+                            innerTransform = isDesktop ? `translateZ(-100px) scale(0.75)` : 'scale(0.75)';
                         }
 
                         return (
@@ -148,7 +161,6 @@ export default function PortfolioSection({ sceneProgress = 1 }: Props) {
 
                                     {isCenter && (
                                         <>
-                                            {/* Light sheen */}
                                             <span
                                                 aria-hidden
                                                 className='pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -translate-x-full rotate-12 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition-all duration-700 ease-out group-hover:translate-x-[300%] group-hover:opacity-100'
@@ -206,6 +218,26 @@ export default function PortfolioSection({ sceneProgress = 1 }: Props) {
                         <ChevronRight className='w-5 h-5' />
                     </button>
                 </div>
+            </div>
+
+            <div
+                className='mt-5 flex items-center justify-center gap-1.5'
+                style={{ opacity: arrowOpacity, transition: 'opacity 0.3s ease-out' }}
+            >
+                {projects.map((project, index) => (
+                    <button
+                        key={project.slug}
+                        type='button'
+                        aria-label={`Go to ${project.title}`}
+                        onClick={() => {
+                            pauseShuffle();
+                            setCurrentIndex(index);
+                        }}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                            index === currentIndex ? 'w-5 bg-emerald-500' : 'w-1.5 bg-gray-300 hover:bg-emerald-300'
+                        }`}
+                    />
+                ))}
             </div>
         </section>
     );

@@ -5,9 +5,10 @@ import { useState, type FormEvent } from 'react';
 interface Props {
     sceneProgress?: number;
     sceneDelta?: number;
+    isDesktop?: boolean;
 }
 
-export default function ContactSection({ sceneProgress = 1 }: Props) {
+export default function ContactSection({ sceneProgress = 1, isDesktop = true }: Props) {
     const p = Math.min(1, Math.max(0, sceneProgress));
     const entry = Math.min(1, p * 3.33);
 
@@ -44,9 +45,18 @@ export default function ContactSection({ sceneProgress = 1 }: Props) {
         'w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 transition-all duration-200 focus:scale-[1.01] focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-300';
 
     return (
-        <section id='contact'>
+        <section id='contact' className='relative'>
             <div
-                className='mb-10 text-center'
+                aria-hidden
+                className='animate-float-a pointer-events-none absolute -left-10 top-0 hidden h-40 w-40 rounded-full bg-emerald-100/50 blur-3xl md:block'
+            />
+            <div
+                aria-hidden
+                className='animate-float-b pointer-events-none absolute -right-10 bottom-0 hidden h-48 w-48 rounded-full bg-emerald-200/40 blur-3xl md:block'
+            />
+
+            <div
+                className='relative mb-10 text-center'
                 style={{
                     marginTop: headerOffsetY,
                     opacity: headerOpacity,
@@ -54,9 +64,11 @@ export default function ContactSection({ sceneProgress = 1 }: Props) {
                     transition: 'margin-top 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out',
                 }}
             >
-                <div className='inline-flex items-center px-4 py-1 mb-4 text-xs font-semibold border rounded-full border-emerald-200 bg-emerald-50 text-emerald-600'>
-                    <span className='mr-2 inline-block h-1.5 w-1.5 rounded-full bg-emerald-500' />
-                    Contact
+                <div className='inline-flex items-center gap-2 px-4 py-1 mb-4 text-xs font-semibold border rounded-full border-emerald-200 bg-emerald-50 text-emerald-600'>
+                    <span className='relative flex h-1.5 w-1.5'>
+                        <span className='animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-emerald-500' />
+                    </span>
+                    Available for freelance &amp; full-time roles
                 </div>
                 <h2 className='text-3xl font-bold text-gray-900'>
                     Let&apos;s Discuss Your Next <span className='text-emerald-500'>Project or Role</span>
@@ -67,12 +79,12 @@ export default function ContactSection({ sceneProgress = 1 }: Props) {
                 </p>
             </div>
 
-            <div className='grid gap-8 md:grid-cols-3'>
+            <div className='relative grid gap-8 md:grid-cols-3'>
                 <div
                     className='space-y-7 [transform-style:preserve-3d]'
                     style={{
                         opacity: leftOpacity,
-                        transform: `translateX(${leftOffsetX}px) translateZ(${entry * 50}px) scale(${leftScale})`,
+                        transform: `translateX(${leftOffsetX}px) translateZ(${isDesktop ? entry * 50 : 0}px) scale(${leftScale})`,
                         transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
                     }}
                 >
@@ -129,7 +141,7 @@ export default function ContactSection({ sceneProgress = 1 }: Props) {
                     className='md:col-span-2 [transform-style:preserve-3d]'
                     style={{
                         opacity: rightOpacity,
-                        transform: `translateX(${rightOffsetX}px) translateZ(${entry * 70}px) scale(${rightScale})`,
+                        transform: `translateX(${rightOffsetX}px) translateZ(${isDesktop ? entry * 70 : 0}px) scale(${rightScale})`,
                         transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
                     }}
                 >

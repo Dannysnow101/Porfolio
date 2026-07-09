@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 
 export default function HomePage() {
     return (
-        <div className='min-h-screen bg-white overflow-x-clip'>
+        <div className='min-h-screen bg-white'>
             <Navbar />
             <ScrollProgressDots />
 
