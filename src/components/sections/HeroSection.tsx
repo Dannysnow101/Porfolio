@@ -19,7 +19,6 @@ export default function HeroSection() {
     const cursorCurrentRef = useRef({ x: 0, y: 0 });
     const scrollOutRef = useRef(0);
 
-    // ✅ PDF is the correct format for CV downloads
     const cvHref = '/cv/sowale-daniel-cv.pdf';
     const cvFileName = 'Sowale-Daniel-CV.pdf';
 
@@ -31,7 +30,6 @@ export default function HeroSection() {
         if (!mounted) return;
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
         let raf = 0;
 
         const computeScrollOut = () => {
@@ -69,7 +67,6 @@ export default function HeroSection() {
             const liftMax = isMobile ? 12 : 20;
 
             const opacity = 1 - 0.45 * scrollOut;
-
             const tilt = tiltMax * scrollOut;
             const yaw = yawMax * scrollOut;
             const z = -zMax * scrollOut;
@@ -112,7 +109,6 @@ export default function HeroSection() {
                 const shineX = -30 + cx * 26 + (1 - scrollOut) * 40;
                 const shineY = cy * 18;
                 const shineRotate = -18 + cx * 6;
-
                 shineRef.current.style.opacity = String(shineOpacity);
                 shineRef.current.style.transform = `translateX(${shineX}px) translateY(${shineY}px) rotate(${shineRotate}deg)`;
             }
@@ -129,11 +125,9 @@ export default function HeroSection() {
         const onPointerMove = (e: PointerEvent) => {
             const node = portraitRef.current;
             if (!node) return;
-
             const rect = node.getBoundingClientRect();
             const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
             const y = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-
             cursorTargetRef.current.x = clamp(x, -1, 1);
             cursorTargetRef.current.y = clamp(y, -1, 1);
         };
@@ -168,7 +162,6 @@ export default function HeroSection() {
             ref={sectionRef}
             className='relative pt-10 lg:pt-16 [perspective:1200px]'
         >
-            {/* Background: confetti + soft glow */}
             <div className='absolute inset-0 pointer-events-none -z-10'>
                 <div className='absolute left-1/2 top-0 h-40 w-[520px] -translate-x-1/2 rounded-full bg-emerald-200/40 blur-3xl' />
                 <span className='absolute w-2 h-2 bg-red-400 rounded-full left-6 top-10' />
@@ -180,7 +173,6 @@ export default function HeroSection() {
             </div>
 
             <div className='grid items-center gap-12 md:grid-cols-2 [transform-style:preserve-3d]'>
-                {/* Left text side */}
                 <div
                     ref={leftRef}
                     className={`[transform-origin:center_top] [transform-style:preserve-3d] [will-change:transform,opacity] transition-opacity duration-300 ${
@@ -203,7 +195,6 @@ export default function HeroSection() {
                     </p>
 
                     <div className='flex flex-wrap items-center gap-5'>
-                        {/* ✅ PDF download — correct file name passed so browser saves it cleanly */}
                         <a
                             href={cvHref}
                             download={cvFileName}
@@ -226,7 +217,6 @@ export default function HeroSection() {
                     </div>
                 </div>
 
-                {/* Right image side */}
                 <div
                     ref={rightRef}
                     className={`relative flex items-center justify-center gap-3 md:justify-end [transform-origin:center_top] [transform-style:preserve-3d] [will-change:transform,opacity] transition-opacity duration-300 ${
@@ -265,7 +255,6 @@ export default function HeroSection() {
                         </div>
                     </div>
 
-                    {/* Social sidebar */}
                     <div className='flex flex-col items-center gap-6'>
                         <div className='flex flex-col items-center mt-14'>
                             <span className='rotate-90 whitespace-nowrap text-[10px] font-semibold tracking-[0.3em] text-gray-500'>

@@ -2,14 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 
-const lerp = (from: number, to: number, t: number) => from + (to - from) * t;
-
 export default function SnowflakeCursor() {
     const cursorRef = useRef<HTMLDivElement | null>(null);
-
-    const targetRef = useRef({ x: -100, y: -100 });
-    const currentRef = useRef({ x: -100, y: -100 });
-    const rafRef = useRef(0);
     const visibleRef = useRef(false);
 
     useEffect(() => {
@@ -21,8 +15,9 @@ export default function SnowflakeCursor() {
         if (!el) return;
 
         const onPointerMove = (e: PointerEvent) => {
-            targetRef.current.x = e.clientX;
-            targetRef.current.y = e.clientY;
+            // Track the real cursor 1:1, no smoothing/lag -- matches native
+            // cursor speed exactly.
+            el.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
 
             if (!visibleRef.current) {
                 visibleRef.current = true;
@@ -35,24 +30,10 @@ export default function SnowflakeCursor() {
             el.style.opacity = '0';
         };
 
-        const tick = () => {
-            currentRef.current.x = lerp(currentRef.current.x, targetRef.current.x, 0.14);
-            currentRef.current.y = lerp(currentRef.current.y, targetRef.current.y, 0.14);
-
-            if (el) {
-                el.style.transform = `translate(${currentRef.current.x}px, ${currentRef.current.y}px) translate(-50%, -50%)`;
-            }
-
-            rafRef.current = window.requestAnimationFrame(tick);
-        };
-
-        rafRef.current = window.requestAnimationFrame(tick);
-
         window.addEventListener('pointermove', onPointerMove);
         document.addEventListener('pointerleave', onPointerLeave);
 
         return () => {
-            window.cancelAnimationFrame(rafRef.current);
             window.removeEventListener('pointermove', onPointerMove);
             document.removeEventListener('pointerleave', onPointerLeave);
         };
