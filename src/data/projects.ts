@@ -62,5 +62,14 @@ export const projects: ProjectItem[] = [
         image: '/images/SnowAI.png',
         liveUrl: 'https://snowai.netlify.app/',
         githubUrl: 'https://github.com/Dannysnow101/Snow_AI',
-},
+    },
+    {
+        slug: 'babsjidds',
+        title: 'BabsJidds – Personal Branding',
+        category: 'PERSONAL · BRAND WEBSITE',
+        description: 'Showcase of my father\'s personal brand and professional services.',
+        image: '/images/BabsJidds.png',
+        liveUrl: 'https://babsjidds.netlify.app/',
+        githubUrl: 'https://github.com/Dannysnow101/babsJidds',
+    },
 ];
